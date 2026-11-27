@@ -644,6 +644,14 @@ rule-providers:
     path: ./ruleset/twitch_domain.mrs
     interval: 86400
 
+  github_domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/github.mrs"
+    path: ./ruleset/github_domain.mrs
+    interval: 86400
+
 # 7. 四段式低耗规则判断区
 rules:
   # 第 1 段：隐私拦截、私网、Google CN 修复、国内银行/政务/直连
@@ -704,6 +712,9 @@ rules:
 
   - DOMAIN-SUFFIX,notion.so,🤖 AI 服务
   - RULE-SET,ai_domain,🤖 AI 服务
+
+  # GitHub 必须在 microsoft_domain 之前（微软规则集内含 GitHub），确保走日常代理而非系统服务直连
+  - RULE-SET,github_domain,🚀 日常代理
 
   - RULE-SET,apple_domain,📱 系统服务
   - RULE-SET,microsoft_domain,📱 系统服务
