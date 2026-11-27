@@ -1,0 +1,163 @@
+# 聚合规则集定义（由 scripts/build_bundles.py 自动拉取上游、去重、剔除冲突并编译为 .mrs 与 .yaml）
+# 上游默认基址: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo
+
+domain_bundles:
+  reject-all:
+    local:
+      - rules/reject-extra.yaml
+
+  private-domain:
+    upstream:
+      - geosite/private
+
+  google-cn-fix:
+    local:
+      - rules/google-cn-fix.yaml
+
+  direct-cn-all:
+    local:
+      - rules/direct-cn-extra.yaml
+    upstream:
+      - geosite/cn
+      - geosite/geolocation-cn
+      - geosite/apple@cn
+      - geosite/microsoft@cn
+      - geosite/samsung@cn
+      - geosite/category-game-platforms-download@cn
+      - geosite/bilibili
+      - geosite/category-bank-cn
+      - geosite/icbc
+      - geosite/ccb
+      - geosite/boc
+      - geosite/cmb
+      - geosite/pingan
+      - geosite/citic
+    exclude_bundles:
+      - google-cn-fix
+
+  web3-all:
+    local:
+      - rules/web3-extra.yaml
+    upstream:
+      - geosite/category-cryptocurrency
+
+  pay-all:
+    local:
+      - rules/bank-pay-extra.yaml
+    upstream:
+      - geosite/paypal
+      - geosite/stripe
+      - geosite/wise
+      - geosite/redotpay
+      - geosite/safepal
+      - geosite/visa
+      - geosite/mastercard
+      - geosite/hsbc
+      - geosite/standardchartered
+      - geosite/category-finance
+    exclude_cn_tld: true
+    exclude_bundles:
+      - direct-cn-all
+      - web3-all
+
+  media-all:
+    upstream:
+      - geosite/youtube
+      - geosite/netflix
+      - geosite/disney
+      - geosite/twitch
+      - geosite/spotify
+      - geosite/primevideo
+      - geosite/hbo
+
+  googlefcm:
+    upstream:
+      - geosite/googlefcm
+
+  google-meta-all:
+    local:
+      - rules/google-cn-fix.yaml
+    upstream:
+      - geosite/meta
+      - geosite/google
+    exclude_bundles:
+      - media-all
+      - googlefcm
+
+  tiktok:
+    upstream:
+      - geosite/tiktok
+
+  social-all:
+    upstream:
+      - geosite/linkedin
+      - geosite/twitter
+      - geosite/telegram
+      - geosite/discord
+      - geosite/reddit
+      - geosite/pinterest
+    exclude_bundles:
+      - google-meta-all
+
+  ai-all:
+    upstream:
+      - geosite/category-ai-!cn
+      - geosite/notion
+    exclude_bundles:
+      - pay-all
+      - web3-all
+      - google-meta-all
+
+  github:
+    upstream:
+      - geosite/github
+    exclude_bundles:
+      - ai-all
+
+  system-all:
+    upstream:
+      - geosite/apple
+      - geosite/microsoft
+      - geosite/samsung
+    exclude_bundles:
+      - direct-cn-all
+      - github
+      - ai-all
+
+  noncn-all:
+    upstream:
+      - geosite/geolocation-!cn
+    exclude_bundles:
+      - direct-cn-all
+      - pay-all
+      - web3-all
+      - media-all
+      - googlefcm
+      - google-meta-all
+      - tiktok
+      - social-all
+      - ai-all
+      - github
+      - system-all
+
+ipcidr_bundles:
+  private-ip:
+    upstream:
+      - geoip/private
+
+  meta-ip:
+    upstream:
+      - geoip/facebook
+
+  media-ip:
+    upstream:
+      - geoip/netflix
+
+  social-ip:
+    upstream:
+      - geoip/telegram
+      - geoip/twitter
+
+  cn-ip:
+    upstream:
+      - geoip/cn

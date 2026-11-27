@@ -2,11 +2,15 @@ name: Build & Publish Clash Rules
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 20 * * *"
   push:
     branches: [ main ]
     paths:
       - 'rules/**'
       - 'templates/**'
+      - 'bundles.yaml'
+      - 'scripts/**'
       - '.github/workflows/release.yml'
 
 permissions:
@@ -28,15 +32,12 @@ jobs:
           chmod +x mihomo
           ./mihomo -v
 
-      - name: Compile .mrs and stage publish files
+      - name: Build merged rulesets and compile .mrs
         run: |
           mkdir -p publish/templates
-          for f in rules/*.yaml; do
-            name=$(basename "$f" .yaml)
-            cp "$f" "publish/${name}.yaml"
-            ./mihomo convert-ruleset domain yaml "$f" "publish/${name}.mrs"
-            test -s "publish/${name}.mrs"
-          done
+          python3 scripts/build_bundles.py --repo-root . --out-dir publish --mihomo ./mihomo
+          curl -sfL "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/fakeip-filter.mrs" -o publish/fakeip-filter.mrs
+          test -s publish/fakeip-filter.mrs
           cp templates/*.yaml publish/templates/
           echo "RELEASE_NAME=Released on $(date -u +%Y.%m.%d-%H:%M) UTC" >> "$GITHUB_ENV"
           echo "TAG_NAME=$(date -u +%Y%m%d%H%M%S)" >> "$GITHUB_ENV"

@@ -38,9 +38,8 @@ dns:
   fake-ip-filter:
     - "rule-set:private_domain"
     - "rule-set:fakeip_filter"
-    - "rule-set:cn_domain"
-    - "rule-set:googlefcm_domain"
-    - "rule-set:direct_cn_extra"
+    - "rule-set:direct_cn_all"
+    - "rule-set:googlefcm"
   default-nameserver:
     - "223.5.5.5"
     - "119.29.29.29"
@@ -54,7 +53,7 @@ dns:
     - "https://dns.google/dns-query#🚀 日常代理"
   nameserver-policy:
     "rule-set:private_domain": system
-    "rule-set:cn_domain":
+    "rule-set:direct_cn_all":
       - "223.5.5.5#DIRECT"
       - "119.29.29.29#DIRECT"
   direct-nameserver:
@@ -240,39 +239,30 @@ proxy-groups:
     use: [Airport_Backup_B]
     exclude-filter: "如节点失效|剩余|到期|官网|流量|套餐"
 
-# 6. 远程规则集（个人自定义 .mrs + 上游社区 .mrs）
+# 6. 远程规则集（全部由本仓库 @release 自动聚合去重编译，共 21 个 .mrs）
 rule-providers:
-  # --- 本仓库自动编译发布的个人规则集 (.mrs) ---
-  reject_extra:
+  fakeip_filter:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/reject-extra.mrs"
-    path: ./ruleset/reject_extra.mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/fakeip-filter.mrs"
+    path: ./ruleset/fakeip_filter.mrs
     interval: 86400
 
-  direct_cn_extra:
+  reject_all:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/direct-cn-extra.mrs"
-    path: ./ruleset/direct_cn_extra.mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/reject-all.mrs"
+    path: ./ruleset/reject_all.mrs
     interval: 86400
 
-  bank_pay_extra:
+  private_domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/bank-pay-extra.mrs"
-    path: ./ruleset/bank_pay_extra.mrs
-    interval: 86400
-
-  web3_extra:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/web3-extra.mrs"
-    path: ./ruleset/web3_extra.mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/private-domain.mrs"
+    path: ./ruleset/private_domain.mrs
     interval: 86400
 
   google_cn_fix:
@@ -283,449 +273,171 @@ rule-providers:
     path: ./ruleset/google_cn_fix.mrs
     interval: 86400
 
-  # --- 上游社区规则集 ---
-  private_domain:
+  direct_cn_all:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/private.mrs"
-    path: ./ruleset/private_domain.mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/direct-cn-all.mrs"
+    path: ./ruleset/direct_cn_all.mrs
+    interval: 86400
+
+  pay_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/pay-all.mrs"
+    path: ./ruleset/pay_all.mrs
+    interval: 86400
+
+  web3_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/web3-all.mrs"
+    path: ./ruleset/web3_all.mrs
+    interval: 86400
+
+  media_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/media-all.mrs"
+    path: ./ruleset/media_all.mrs
+    interval: 86400
+
+  googlefcm:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/googlefcm.mrs"
+    path: ./ruleset/googlefcm.mrs
+    interval: 86400
+
+  google_meta_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/google-meta-all.mrs"
+    path: ./ruleset/google_meta_all.mrs
+    interval: 86400
+
+  tiktok:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/tiktok.mrs"
+    path: ./ruleset/tiktok.mrs
+    interval: 86400
+
+  social_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/social-all.mrs"
+    path: ./ruleset/social_all.mrs
+    interval: 86400
+
+  ai_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/ai-all.mrs"
+    path: ./ruleset/ai_all.mrs
+    interval: 86400
+
+  github:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/github.mrs"
+    path: ./ruleset/github.mrs
+    interval: 86400
+
+  system_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/system-all.mrs"
+    path: ./ruleset/system_all.mrs
+    interval: 86400
+
+  noncn_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/noncn-all.mrs"
+    path: ./ruleset/noncn_all.mrs
     interval: 86400
 
   private_ip:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geoip/private.mrs"
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/private-ip.mrs"
     path: ./ruleset/private_ip.mrs
     interval: 86400
 
-  fakeip_filter:
+  meta_ip:
     type: http
-    behavior: domain
+    behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/fakeip-filter.mrs"
-    path: ./ruleset/fakeip_filter.mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/meta-ip.mrs"
+    path: ./ruleset/meta_ip.mrs
     interval: 86400
 
-  cn_domain:
+  media_ip:
     type: http
-    behavior: domain
+    behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/cn.mrs"
-    path: ./ruleset/cn_domain.mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/media-ip.mrs"
+    path: ./ruleset/media_ip.mrs
+    interval: 86400
+
+  social_ip:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/social-ip.mrs"
+    path: ./ruleset/social_ip.mrs
     interval: 86400
 
   cn_ip:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geoip/cn.mrs"
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/cn-ip.mrs"
     path: ./ruleset/cn_ip.mrs
     interval: 86400
 
-  geolocation_cn_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/geolocation-cn.mrs"
-    path: ./ruleset/geolocation_cn_domain.mrs
-    interval: 86400
-
-  geolocation_noncn_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/geolocation-!cn.mrs"
-    path: ./ruleset/geolocation_noncn_domain.mrs
-    interval: 86400
-
-  games_download_cn_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/category-game-platforms-download@cn.mrs"
-    path: ./ruleset/games_download_cn_domain.mrs
-    interval: 86400
-
-  apple_cn_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/apple@cn.mrs"
-    path: ./ruleset/apple_cn_domain.mrs
-    interval: 86400
-
-  microsoft_cn_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/microsoft@cn.mrs"
-    path: ./ruleset/microsoft_cn_domain.mrs
-    interval: 86400
-
-  samsung_cn_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/samsung@cn.mrs"
-    path: ./ruleset/samsung_cn_domain.mrs
-    interval: 86400
-
-  apple_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/apple.mrs"
-    path: ./ruleset/apple_domain.mrs
-    interval: 86400
-
-  microsoft_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/microsoft.mrs"
-    path: ./ruleset/microsoft_domain.mrs
-    interval: 86400
-
-  samsung_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/samsung.mrs"
-    path: ./ruleset/samsung_domain.mrs
-    interval: 86400
-
-  googlefcm_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/googlefcm.mrs"
-    path: ./ruleset/googlefcm_domain.mrs
-    interval: 86400
-
-  bilibili_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/bilibili.mrs"
-    path: ./ruleset/bilibili_domain.mrs
-    interval: 86400
-
-  ai_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/category-ai-!cn.mrs"
-    path: ./ruleset/ai_domain.mrs
-    interval: 86400
-
-  crypto_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/category-cryptocurrency.mrs"
-    path: ./ruleset/crypto_domain.mrs
-    interval: 86400
-
-  redotpay_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/redotpay.mrs"
-    path: ./ruleset/redotpay_domain.mrs
-    interval: 86400
-
-  safepal_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/safepal.mrs"
-    path: ./ruleset/safepal_domain.mrs
-    interval: 86400
-
-  meta_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/meta.mrs"
-    path: ./ruleset/meta_domain.mrs
-    interval: 86400
-
-  bank_cn_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/category-bank-cn.mrs"
-    path: ./ruleset/bank_cn_domain.mrs
-    interval: 86400
-
-  icbc_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/icbc.mrs"
-    path: ./ruleset/icbc_domain.mrs
-    interval: 86400
-
-  ccb_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/ccb.mrs"
-    path: ./ruleset/ccb_domain.mrs
-    interval: 86400
-
-  boc_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/boc.mrs"
-    path: ./ruleset/boc_domain.mrs
-    interval: 86400
-
-  cmb_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/cmb.mrs"
-    path: ./ruleset/cmb_domain.mrs
-    interval: 86400
-
-  pingan_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/pingan.mrs"
-    path: ./ruleset/pingan_domain.mrs
-    interval: 86400
-
-  citic_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/citic.mrs"
-    path: ./ruleset/citic_domain.mrs
-    interval: 86400
-
-  paypal_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/paypal.mrs"
-    path: ./ruleset/paypal_domain.mrs
-    interval: 86400
-
-  stripe_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/stripe.mrs"
-    path: ./ruleset/stripe_domain.mrs
-    interval: 86400
-
-  wise_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/wise.mrs"
-    path: ./ruleset/wise_domain.mrs
-    interval: 86400
-
-  whatsapp_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/whatsapp.mrs"
-    path: ./ruleset/whatsapp_domain.mrs
-    interval: 86400
-
-  instagram_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/instagram.mrs"
-    path: ./ruleset/instagram_domain.mrs
-    interval: 86400
-
-  google_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.mrs"
-    path: ./ruleset/google_domain.mrs
-    interval: 86400
-
-  tiktok_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/tiktok.mrs"
-    path: ./ruleset/tiktok_domain.mrs
-    interval: 86400
-
-  linkedin_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/linkedin.mrs"
-    path: ./ruleset/linkedin_domain.mrs
-    interval: 86400
-
-  twitter_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/twitter.mrs"
-    path: ./ruleset/twitter_domain.mrs
-    interval: 86400
-
-  telegram_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.mrs"
-    path: ./ruleset/telegram_domain.mrs
-    interval: 86400
-
-  telegram_ip:
-    type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.mrs"
-    path: ./ruleset/telegram_ip.mrs
-    interval: 86400
-
-  discord_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/discord.mrs"
-    path: ./ruleset/discord_domain.mrs
-    interval: 86400
-
-  reddit_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/reddit.mrs"
-    path: ./ruleset/reddit_domain.mrs
-    interval: 86400
-
-  youtube_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.mrs"
-    path: ./ruleset/youtube_domain.mrs
-    interval: 86400
-
-  netflix_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/netflix.mrs"
-    path: ./ruleset/netflix_domain.mrs
-    interval: 86400
-
-  disney_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/disney.mrs"
-    path: ./ruleset/disney_domain.mrs
-    interval: 86400
-
-  twitch_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/twitch.mrs"
-    path: ./ruleset/twitch_domain.mrs
-    interval: 86400
-
-  github_domain:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/appshubcc/bett-rules@meta/geo/geosite/github.mrs"
-    path: ./ruleset/github_domain.mrs
-    interval: 86400
-
-# 7. 四段式低耗规则判断区
+# 7. 四段式全量聚合规则判断区（仅 23 条，云端已自动去重与剔除冲突）
 rules:
-  # 第 1 段：隐私拦截、私网、Google CN 修复、国内银行/政务/直连
-  - RULE-SET,reject_extra,REJECT
+  # 第 1 段：隐私拦截、私网、Google CN 修复、全量国内直连
+  - RULE-SET,reject_all,REJECT
   - RULE-SET,private_domain,DIRECT
   - RULE-SET,private_ip,DIRECT,no-resolve
-
-  # Google 国内 CDN 修复（必须放在 DOMAIN-SUFFIX,cn,DIRECT 之前）
   - RULE-SET,google_cn_fix,🌐 Google & Meta
-
-  # 国内银行、政务、财税与个人直连扩展
   - DOMAIN-SUFFIX,cn,DIRECT
-  - RULE-SET,direct_cn_extra,DIRECT
-  - RULE-SET,geolocation_cn_domain,DIRECT
-  - RULE-SET,games_download_cn_domain,DIRECT
-  - RULE-SET,apple_cn_domain,DIRECT
-  - RULE-SET,microsoft_cn_domain,DIRECT
-  - RULE-SET,samsung_cn_domain,DIRECT
-  - RULE-SET,bilibili_domain,DIRECT
-  - RULE-SET,bank_cn_domain,DIRECT
-  - RULE-SET,icbc_domain,DIRECT
-  - RULE-SET,ccb_domain,DIRECT
-  - RULE-SET,boc_domain,DIRECT
-  - RULE-SET,cmb_domain,DIRECT
-  - RULE-SET,pingan_domain,DIRECT
-  - RULE-SET,citic_domain,DIRECT
+  - RULE-SET,direct_cn_all,DIRECT
 
   # 第 2 段：海外核心业务精准分流
-  - RULE-SET,bank_pay_extra,💳 支付与金融
-  - RULE-SET,paypal_domain,💳 支付与金融
-  - RULE-SET,stripe_domain,💳 支付与金融
-  - RULE-SET,wise_domain,💳 支付与金融
-  - RULE-SET,redotpay_domain,💳 支付与金融
-  - RULE-SET,safepal_domain,💳 支付与金融
-
-  - RULE-SET,web3_extra,🪙 Web3 服务
-  - RULE-SET,crypto_domain,🪙 Web3 服务
-
-  - RULE-SET,youtube_domain,🎬 影音流媒体
-  - RULE-SET,netflix_domain,🎬 影音流媒体
-  - RULE-SET,disney_domain,🎬 影音流媒体
-  - RULE-SET,twitch_domain,🎬 影音流媒体
-
-  - RULE-SET,googlefcm_domain,📢 FCM 推送
-
-  - RULE-SET,meta_domain,🌐 Google & Meta
-  - RULE-SET,whatsapp_domain,🌐 Google & Meta
-  - RULE-SET,instagram_domain,🌐 Google & Meta
-  - RULE-SET,google_domain,🌐 Google & Meta
-
-  - RULE-SET,tiktok_domain,🎵 TikTok
-
-  - RULE-SET,linkedin_domain,💬 海外社媒
-  - RULE-SET,twitter_domain,💬 海外社媒
-  - RULE-SET,telegram_domain,💬 海外社媒
-  - RULE-SET,discord_domain,💬 海外社媒
-  - RULE-SET,reddit_domain,💬 海外社媒
-
-  - DOMAIN-SUFFIX,notion.so,🤖 AI 服务
-  - RULE-SET,ai_domain,🤖 AI 服务
-
-  # GitHub 必须在 microsoft_domain 之前（微软规则集内含 GitHub），确保走日常代理而非系统服务直连
-  - RULE-SET,github_domain,🚀 日常代理
-
-  - RULE-SET,apple_domain,📱 系统服务
-  - RULE-SET,microsoft_domain,📱 系统服务
-  - RULE-SET,samsung_domain,📱 系统服务
-
+  - RULE-SET,pay_all,💳 支付与金融
+  - RULE-SET,web3_all,🪙 Web3 服务
+  - RULE-SET,media_all,🎬 影音流媒体
+  - RULE-SET,googlefcm,📢 FCM 推送
+  - RULE-SET,google_meta_all,🌐 Google & Meta
+  - RULE-SET,tiktok,🎵 TikTok
+  - RULE-SET,social_all,💬 海外社媒
+  - RULE-SET,ai_all,🤖 AI 服务
+  - RULE-SET,github,🚀 日常代理
+  - RULE-SET,system_all,📱 系统服务
   - DOMAIN-SUFFIX,linux.do,🚀 日常代理
 
   # 第 3 段：其余已知海外域名
-  - RULE-SET,geolocation_noncn_domain,🚀 日常代理
+  - RULE-SET,noncn_all,🚀 日常代理
 
-  # 第 4 段：IP 兜底与漏网之鱼
+  # 第 4 段：IP 兜底（防止 App 直连 IP 漏网）与漏网之鱼
+  - RULE-SET,meta_ip,🌐 Google & Meta,no-resolve
+  - RULE-SET,media_ip,🎬 影音流媒体,no-resolve
+  - RULE-SET,social_ip,💬 海外社媒,no-resolve
   - RULE-SET,cn_ip,DIRECT
-  - RULE-SET,telegram_ip,💬 海外社媒,no-resolve
   - MATCH,🐟 漏网之鱼

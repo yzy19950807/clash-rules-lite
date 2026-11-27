@@ -260,38 +260,22 @@ proxy-groups:
     use: [Airport_Backup_B]
     exclude-filter: "如节点失效|剩余|到期|官网|流量|套餐"
 
-# 6. 远程规则集（全部使用标准 .yaml）
+# 6. 远程规则集（全部由本仓库 @release 自动聚合去重编译，共 20 个 .yaml）
 rule-providers:
-  reject_extra:
+  reject_all:
     type: http
     behavior: domain
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/reject-extra.yaml"
-    path: ./ruleset/reject_extra.yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/reject-all.yaml"
+    path: ./ruleset/reject_all.yaml
     interval: 86400
 
-  direct_cn_extra:
+  private_domain:
     type: http
     behavior: domain
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/direct-cn-extra.yaml"
-    path: ./ruleset/direct_cn_extra.yaml
-    interval: 86400
-
-  bank_pay_extra:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/bank-pay-extra.yaml"
-    path: ./ruleset/bank_pay_extra.yaml
-    interval: 86400
-
-  web3_extra:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/web3-extra.yaml"
-    path: ./ruleset/web3_extra.yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/private-domain.yaml"
+    path: ./ruleset/private_domain.yaml
     interval: 86400
 
   google_cn_fix:
@@ -302,426 +286,171 @@ rule-providers:
     path: ./ruleset/google_cn_fix.yaml
     interval: 86400
 
-  private_domain:
+  direct_cn_all:
     type: http
     behavior: domain
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/private.yaml"
-    path: ./ruleset/private_domain.yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/direct-cn-all.yaml"
+    path: ./ruleset/direct_cn_all.yaml
+    interval: 86400
+
+  pay_all:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/pay-all.yaml"
+    path: ./ruleset/pay_all.yaml
+    interval: 86400
+
+  web3_all:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/web3-all.yaml"
+    path: ./ruleset/web3_all.yaml
+    interval: 86400
+
+  media_all:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/media-all.yaml"
+    path: ./ruleset/media_all.yaml
+    interval: 86400
+
+  googlefcm:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/googlefcm.yaml"
+    path: ./ruleset/googlefcm.yaml
+    interval: 86400
+
+  google_meta_all:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/google-meta-all.yaml"
+    path: ./ruleset/google_meta_all.yaml
+    interval: 86400
+
+  tiktok:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/tiktok.yaml"
+    path: ./ruleset/tiktok.yaml
+    interval: 86400
+
+  social_all:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/social-all.yaml"
+    path: ./ruleset/social_all.yaml
+    interval: 86400
+
+  ai_all:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/ai-all.yaml"
+    path: ./ruleset/ai_all.yaml
+    interval: 86400
+
+  github:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/github.yaml"
+    path: ./ruleset/github.yaml
+    interval: 86400
+
+  system_all:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/system-all.yaml"
+    path: ./ruleset/system_all.yaml
+    interval: 86400
+
+  noncn_all:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/noncn-all.yaml"
+    path: ./ruleset/noncn_all.yaml
     interval: 86400
 
   private_ip:
     type: http
     behavior: ipcidr
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/private.yaml"
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/private-ip.yaml"
     path: ./ruleset/private_ip.yaml
+    interval: 86400
+
+  meta_ip:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/meta-ip.yaml"
+    path: ./ruleset/meta_ip.yaml
+    interval: 86400
+
+  media_ip:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/media-ip.yaml"
+    path: ./ruleset/media_ip.yaml
+    interval: 86400
+
+  social_ip:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/social-ip.yaml"
+    path: ./ruleset/social_ip.yaml
     interval: 86400
 
   cn_ip:
     type: http
     behavior: ipcidr
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.yaml"
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/cn-ip.yaml"
     path: ./ruleset/cn_ip.yaml
     interval: 86400
 
-  geolocation_cn_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-cn.yaml"
-    path: ./ruleset/geolocation_cn_domain.yaml
-    interval: 86400
-
-  geolocation_noncn_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml"
-    path: ./ruleset/geolocation_noncn_domain.yaml
-    interval: 86400
-
-  games_download_cn_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-game-platforms-download@cn.yaml"
-    path: ./ruleset/games_download_cn_domain.yaml
-    interval: 86400
-
-  apple_cn_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple@cn.yaml"
-    path: ./ruleset/apple_cn_domain.yaml
-    interval: 86400
-
-  microsoft_cn_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft@cn.yaml"
-    path: ./ruleset/microsoft_cn_domain.yaml
-    interval: 86400
-
-  samsung_cn_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/samsung@cn.yaml"
-    path: ./ruleset/samsung_cn_domain.yaml
-    interval: 86400
-
-  apple_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple.yaml"
-    path: ./ruleset/apple_domain.yaml
-    interval: 86400
-
-  microsoft_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.yaml"
-    path: ./ruleset/microsoft_domain.yaml
-    interval: 86400
-
-  samsung_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/samsung.yaml"
-    path: ./ruleset/samsung_domain.yaml
-    interval: 86400
-
-  googlefcm_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/googlefcm.yaml"
-    path: ./ruleset/googlefcm_domain.yaml
-    interval: 86400
-
-  bilibili_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/bilibili.yaml"
-    path: ./ruleset/bilibili_domain.yaml
-    interval: 86400
-
-  ai_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-!cn.yaml"
-    path: ./ruleset/ai_domain.yaml
-    interval: 86400
-
-  crypto_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-cryptocurrency.yaml"
-    path: ./ruleset/crypto_domain.yaml
-    interval: 86400
-
-  redotpay_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/redotpay.yaml"
-    path: ./ruleset/redotpay_domain.yaml
-    interval: 86400
-
-  safepal_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/safepal.yaml"
-    path: ./ruleset/safepal_domain.yaml
-    interval: 86400
-
-  meta_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/meta.yaml"
-    path: ./ruleset/meta_domain.yaml
-    interval: 86400
-
-  bank_cn_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-bank-cn.yaml"
-    path: ./ruleset/bank_cn_domain.yaml
-    interval: 86400
-
-  icbc_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/icbc.yaml"
-    path: ./ruleset/icbc_domain.yaml
-    interval: 86400
-
-  ccb_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/ccb.yaml"
-    path: ./ruleset/ccb_domain.yaml
-    interval: 86400
-
-  boc_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/boc.yaml"
-    path: ./ruleset/boc_domain.yaml
-    interval: 86400
-
-  cmb_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cmb.yaml"
-    path: ./ruleset/cmb_domain.yaml
-    interval: 86400
-
-  pingan_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/pingan.yaml"
-    path: ./ruleset/pingan_domain.yaml
-    interval: 86400
-
-  citic_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/citic.yaml"
-    path: ./ruleset/citic_domain.yaml
-    interval: 86400
-
-  paypal_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/paypal.yaml"
-    path: ./ruleset/paypal_domain.yaml
-    interval: 86400
-
-  stripe_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/stripe.yaml"
-    path: ./ruleset/stripe_domain.yaml
-    interval: 86400
-
-  wise_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/wise.yaml"
-    path: ./ruleset/wise_domain.yaml
-    interval: 86400
-
-  whatsapp_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/whatsapp.yaml"
-    path: ./ruleset/whatsapp_domain.yaml
-    interval: 86400
-
-  instagram_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/instagram.yaml"
-    path: ./ruleset/instagram_domain.yaml
-    interval: 86400
-
-  google_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.yaml"
-    path: ./ruleset/google_domain.yaml
-    interval: 86400
-
-  tiktok_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/tiktok.yaml"
-    path: ./ruleset/tiktok_domain.yaml
-    interval: 86400
-
-  linkedin_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/linkedin.yaml"
-    path: ./ruleset/linkedin_domain.yaml
-    interval: 86400
-
-  twitter_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/twitter.yaml"
-    path: ./ruleset/twitter_domain.yaml
-    interval: 86400
-
-  telegram_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.yaml"
-    path: ./ruleset/telegram_domain.yaml
-    interval: 86400
-
-  telegram_ip:
-    type: http
-    behavior: ipcidr
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.yaml"
-    path: ./ruleset/telegram_ip.yaml
-    interval: 86400
-
-  discord_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/discord.yaml"
-    path: ./ruleset/discord_domain.yaml
-    interval: 86400
-
-  reddit_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/reddit.yaml"
-    path: ./ruleset/reddit_domain.yaml
-    interval: 86400
-
-  youtube_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml"
-    path: ./ruleset/youtube_domain.yaml
-    interval: 86400
-
-  netflix_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/netflix.yaml"
-    path: ./ruleset/netflix_domain.yaml
-    interval: 86400
-
-  disney_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/disney.yaml"
-    path: ./ruleset/disney_domain.yaml
-    interval: 86400
-
-  twitch_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/twitch.yaml"
-    path: ./ruleset/twitch_domain.yaml
-    interval: 86400
-
-  github_domain:
-    type: http
-    behavior: domain
-    format: yaml
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/github.yaml"
-    path: ./ruleset/github_domain.yaml
-    interval: 86400
-
-# 7. 四段式低耗规则判断区
+# 7. 四段式全量聚合规则判断区（仅 23 条，云端已自动去重与剔除冲突）
 rules:
-  - RULE-SET,reject_extra,REJECT
+  # 第 1 段：隐私拦截、私网、Google CN 修复、全量国内直连
+  - RULE-SET,reject_all,REJECT
   - RULE-SET,private_domain,DIRECT
   - RULE-SET,private_ip,DIRECT,no-resolve
-
   - RULE-SET,google_cn_fix,🌐 Google & Meta
-
   - DOMAIN-SUFFIX,cn,DIRECT
-  - RULE-SET,direct_cn_extra,DIRECT
-  - RULE-SET,geolocation_cn_domain,DIRECT
-  - RULE-SET,games_download_cn_domain,DIRECT
-  - RULE-SET,apple_cn_domain,DIRECT
-  - RULE-SET,microsoft_cn_domain,DIRECT
-  - RULE-SET,samsung_cn_domain,DIRECT
-  - RULE-SET,bilibili_domain,DIRECT
-  - RULE-SET,bank_cn_domain,DIRECT
-  - RULE-SET,icbc_domain,DIRECT
-  - RULE-SET,ccb_domain,DIRECT
-  - RULE-SET,boc_domain,DIRECT
-  - RULE-SET,cmb_domain,DIRECT
-  - RULE-SET,pingan_domain,DIRECT
-  - RULE-SET,citic_domain,DIRECT
+  - RULE-SET,direct_cn_all,DIRECT
 
-  - RULE-SET,bank_pay_extra,💳 支付与金融
-  - RULE-SET,paypal_domain,💳 支付与金融
-  - RULE-SET,stripe_domain,💳 支付与金融
-  - RULE-SET,wise_domain,💳 支付与金融
-  - RULE-SET,redotpay_domain,💳 支付与金融
-  - RULE-SET,safepal_domain,💳 支付与金融
-
-  - RULE-SET,web3_extra,🪙 Web3 服务
-  - RULE-SET,crypto_domain,🪙 Web3 服务
-
-  - RULE-SET,youtube_domain,🎬 影音流媒体
-  - RULE-SET,netflix_domain,🎬 影音流媒体
-  - RULE-SET,disney_domain,🎬 影音流媒体
-  - RULE-SET,twitch_domain,🎬 影音流媒体
-
-  - RULE-SET,googlefcm_domain,📢 FCM 推送
-
-  - RULE-SET,meta_domain,🌐 Google & Meta
-  - RULE-SET,whatsapp_domain,🌐 Google & Meta
-  - RULE-SET,instagram_domain,🌐 Google & Meta
-  - RULE-SET,google_domain,🌐 Google & Meta
-
-  - RULE-SET,tiktok_domain,🎵 TikTok
-
-  - RULE-SET,linkedin_domain,💬 海外社媒
-  - RULE-SET,twitter_domain,💬 海外社媒
-  - RULE-SET,telegram_domain,💬 海外社媒
-  - RULE-SET,discord_domain,💬 海外社媒
-  - RULE-SET,reddit_domain,💬 海外社媒
-
-  - DOMAIN-SUFFIX,notion.so,🤖 AI 服务
-  - RULE-SET,ai_domain,🤖 AI 服务
-
-  # GitHub 必须在 microsoft_domain 之前（微软规则集内含 GitHub），确保走日常代理
-  - RULE-SET,github_domain,🚀 日常代理
-
-  - RULE-SET,apple_domain,📱 系统服务
-  - RULE-SET,microsoft_domain,📱 系统服务
-  - RULE-SET,samsung_domain,📱 系统服务
-
+  # 第 2 段：海外核心业务精准分流
+  - RULE-SET,pay_all,💳 支付与金融
+  - RULE-SET,web3_all,🪙 Web3 服务
+  - RULE-SET,media_all,🎬 影音流媒体
+  - RULE-SET,googlefcm,📢 FCM 推送
+  - RULE-SET,google_meta_all,🌐 Google & Meta
+  - RULE-SET,tiktok,🎵 TikTok
+  - RULE-SET,social_all,💬 海外社媒
+  - RULE-SET,ai_all,🤖 AI 服务
+  - RULE-SET,github,🚀 日常代理
+  - RULE-SET,system_all,📱 系统服务
   - DOMAIN-SUFFIX,linux.do,🚀 日常代理
 
-  - RULE-SET,geolocation_noncn_domain,🚀 日常代理
+  # 第 3 段：其余已知海外域名
+  - RULE-SET,noncn_all,🚀 日常代理
 
+  # 第 4 段：IP 兜底（防止 App 直连 IP 漏网）与漏网之鱼
+  - RULE-SET,meta_ip,🌐 Google & Meta,no-resolve
+  - RULE-SET,media_ip,🎬 影音流媒体,no-resolve
+  - RULE-SET,social_ip,💬 海外社媒,no-resolve
   - RULE-SET,cn_ip,DIRECT
-  - RULE-SET,telegram_ip,💬 海外社媒,no-resolve
   - MATCH,🐟 漏网之鱼
