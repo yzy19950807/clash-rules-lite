@@ -11,7 +11,7 @@
 | 规则集 | 用途 | Mihomo (`.mrs`) | Karing / 通用 (`.yaml`) |
 | :--- | :--- | :--- | :--- |
 | `direct-cn-extra` | 国内银行/支付/政务补充、Oracle、LAN `.home` 等直连扩展 | `https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/direct-cn-extra.mrs` | `https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/direct-cn-extra.yaml` |
-| `bank-pay-extra` | 跨境 B2B 支付与外贸收款补充（Airwallex / Payoneer / PingPong / WorldFirst / Mercury / SafePal） | `https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/bank-pay-extra.mrs` | `https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/bank-pay-extra.yaml` |
+| `bank-pay-extra` | 跨境支付与金融服务补充（Airwallex / Payoneer / PingPong / WorldFirst / Mercury / SafePal） | `https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/bank-pay-extra.mrs` | `https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/bank-pay-extra.yaml` |
 | `web3-extra` | 链上钱包与浏览器补充（TokenPocket / imToken / TronLink / Phantom / Ledger） | `https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/web3-extra.mrs` | `https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/web3-extra.yaml` |
 | `google-cn-fix` | Google CN CDN 修复（`googleapis.cn`、`xn--ngstr-lra8j.com`） | `https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/google-cn-fix.mrs` | `https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/google-cn-fix.yaml` |
 | `reject-extra` | 运营商追踪域名拦截 | `https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/reject-extra.mrs` | `https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/reject-extra.yaml` |
@@ -25,6 +25,6 @@
 
 ### 使用方式
 1. 下载或复制对应模板到本地；
-2. 将 `proxies:` 中的示例占位节点替换为你的真实自建/链式节点；
-3. 将 `proxy-providers:` 中的占位 URL 替换为你的真实机场订阅链接；
+2. 将 `proxies:` 中的示例占位节点（`🇺🇸 US-Node-01`、`🔗 Relay-Node-01` 等）替换为你的真实节点或链式节点，并同步调整策略组中的引用；
+3. 将 `proxy-providers:` 中的占位 URL 替换为你的真实订阅链接；
 4. 日后只需在 GitHub 上编辑 `rules/*.yaml` 并提交，Actions 会自动重新编译 `.mrs` 并刷新 CDN，各设备客户端刷新 `rule-providers` 即可同步生效。

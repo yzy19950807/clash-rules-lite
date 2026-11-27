@@ -1,5 +1,5 @@
 # =====================================================================
-# Clash Verge Rev (Mihomo 内核) 公开脱敏模板 — B2B 外贸 / Web3 / 全手动版
+# Clash Verge Rev (Mihomo 内核) 公开脱敏模板 — 多场景分流 / 全手动版
 # =====================================================================
 # 核心特性:
 # 1. 零自动切换风控: 全部 22 个策略组均为手动 select，彻底剔除 url-test 自动测速
@@ -68,14 +68,14 @@ hosts:
   "dns.google": ["8.8.8.8", "8.8.4.4"]
   "services.googleapis.cn": "services.googleapis.com"
 
-# 3. [示例占位节点] 请替换为你的真实自建与链式节点
+# 3. [示例占位节点] 请替换为你的真实节点与链式节点
 proxies:
-  - { name: "自建-美国专线", type: vless, server: us-direct.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000001, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
-  - { name: "自建-美国家宽", type: vless, server: us-isp.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000002, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
-  - { name: "自建-日本主力", type: vless, server: jp.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000003, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
-  - { name: "自建-欧洲主力", type: vless, server: eu.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000004, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
-  - { name: "🔗 链式-美国家宽", type: socks5, server: chain-us.example.com, port: 1080, username: user, password: CHANGE_ME, dialer-proxy: "✈️ 机场跳板选择" }
-  - { name: "🔗 链式-南美", type: socks5, server: chain-sa.example.com, port: 1080, username: user, password: CHANGE_ME, dialer-proxy: "👆 顶尖中转" }
+  - { name: "🇺🇸 US-Node-01", type: vless, server: us-01.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000001, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
+  - { name: "🇺🇸 US-Node-02", type: vless, server: us-02.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000002, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
+  - { name: "🇯🇵 JP-Node-01", type: vless, server: jp-01.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000003, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
+  - { name: "🇪🇺 EU-Node-01", type: vless, server: eu-01.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000004, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
+  - { name: "🔗 Relay-Node-01", type: socks5, server: relay-01.example.com, port: 1080, username: user, password: CHANGE_ME, dialer-proxy: "✈️ 链式跳板" }
+  - { name: "🔗 Relay-Node-02", type: socks5, server: relay-02.example.com, port: 1080, username: user, password: CHANGE_ME, dialer-proxy: "🔄 核心中转" }
 
 # 4. [示例占位订阅] 请替换为你的真实机场订阅链接
 proxy-providers:
@@ -103,137 +103,137 @@ proxy-providers:
 # 5. 策略组（共 22 个，全部手动 select）
 proxy-groups:
   # 第一层：11 个核心业务组
-  - name: "🏦 银行与支付"
+  - name: "💳 支付与金融"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/PayPal.svg"
-    proxies: ["🇺🇸 美国家宽", "🇺🇸 美国", "🇪🇺 欧洲", "🌏 亚太", "🌎 南美洲"]
+    proxies: ["🛡️ 静态纯净", "🇺🇸 美国节点", "🇪🇺 欧洲节点", "🌏 亚太节点", "🌐 其他地区"]
 
-  - name: "🪙 区块链/Web3"
+  - name: "🪙 Web3 服务"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Bitcoin.svg"
-    proxies: ["🌏 亚太", "🇪🇺 欧洲", "🇺🇸 美国", "🇺🇸 美国家宽", "🌎 南美洲"]
+    proxies: ["🌏 亚太节点", "🇪🇺 欧洲节点", "🇺🇸 美国节点", "🛡️ 静态纯净", "🌐 其他地区"]
 
-  - name: "🌐 Meta与Google"
+  - name: "🌐 Google & Meta"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Meta.svg"
-    proxies: ["🇺🇸 美国家宽", "🇺🇸 美国", "🇪🇺 欧洲", "🌏 亚太", "🌎 南美洲"]
+    proxies: ["🛡️ 静态纯净", "🇺🇸 美国节点", "🇪🇺 欧洲节点", "🌏 亚太节点", "🌐 其他地区"]
 
   - name: "🎵 TikTok"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/TikTok.svg"
-    proxies: ["🇺🇸 美国家宽", "🇺🇸 美国", "🇪🇺 欧洲", "🌏 亚太", "🌎 南美洲"]
+    proxies: ["🛡️ 静态纯净", "🇺🇸 美国节点", "🇪🇺 欧洲节点", "🌏 亚太节点", "🌐 其他地区"]
 
-  - name: "💬 其他社媒"
+  - name: "💬 海外社媒"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Telegram.svg"
-    proxies: ["🇺🇸 美国家宽", "🇺🇸 美国", "🌏 亚太", "🇪🇺 欧洲", "🌎 南美洲"]
+    proxies: ["🛡️ 静态纯净", "🇺🇸 美国节点", "🌏 亚太节点", "🇪🇺 欧洲节点", "🌐 其他地区"]
 
   - name: "🤖 AI 服务"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/OpenAI.svg"
-    proxies: ["🇺🇸 美国家宽", "🇺🇸 美国", "🇪🇺 欧洲", "🌏 亚太"]
+    proxies: ["🛡️ 静态纯净", "🇺🇸 美国节点", "🇪🇺 欧洲节点", "🌏 亚太节点"]
 
-  - name: "⬇️ 大流量视频"
+  - name: "🎬 影音流媒体"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/YouTube.svg"
-    proxies: ["机场节点", "🖐️ 备用机场A", "🕊️ 备用机场B", "👆 顶尖中转", "🇺🇸 美国", "🌏 亚太", "🇪🇺 欧洲"]
+    proxies: ["✈️ 全部机场", "📦 订阅源 A", "📦 订阅源 B", "🔄 核心中转", "🇺🇸 美国节点", "🌏 亚太节点", "🇪🇺 欧洲节点"]
 
   - name: "📱 系统服务"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Apple.svg"
-    proxies: [DIRECT, "🚀 日常代理", "🇺🇸 美国", "🌏 亚太", "🇪🇺 欧洲"]
+    proxies: [DIRECT, "🚀 日常代理", "🇺🇸 美国节点", "🌏 亚太节点", "🇪🇺 欧洲节点"]
 
   - name: "📢 FCM 推送"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Fcm.svg"
-    proxies: [DIRECT, "🌐 Meta与Google", "🚀 日常代理", "🇺🇸 美国", "🌏 亚太"]
+    proxies: [DIRECT, "🌐 Google & Meta", "🚀 日常代理", "🇺🇸 美国节点", "🌏 亚太节点"]
 
   - name: "🚀 日常代理"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Proxy.svg"
-    proxies: ["👆 顶尖中转", "🇺🇸 美国", "🌏 亚太", "🇪🇺 欧洲", "🇺🇸 美国家宽", "机场节点", "🖐️ 备用机场A", "🕊️ 备用机场B", "🌎 南美洲", DIRECT]
+    proxies: ["🔄 核心中转", "🇺🇸 美国节点", "🌏 亚太节点", "🇪🇺 欧洲节点", "🛡️ 静态纯净", "✈️ 全部机场", "📦 订阅源 A", "📦 订阅源 B", "🌐 其他地区", DIRECT]
 
   - name: "🐟 漏网之鱼"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Stack.svg"
-    proxies: ["🚀 日常代理", DIRECT, "🇺🇸 美国", "🌏 亚太", "🇪🇺 欧洲"]
+    proxies: ["🚀 日常代理", DIRECT, "🇺🇸 美国节点", "🌏 亚太节点", "🇪🇺 欧洲节点"]
 
-  # 第二层：1 个专项固定 IP 组
-  - name: "指定IP"
+  # 第二层：1 个自定义定向出口组（按需在本地 rules 中绑定指定域名或 IP）
+  - name: "📌 定向分流"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Static.svg"
-    proxies: ["🇺🇸 美国家宽", "🔗 链式-美国家宽", "🇺🇸 美国", "🔗 链式-南美", "🚀 日常代理", DIRECT]
+    proxies: ["🛡️ 静态纯净", "🔗 Relay-Node-01", "🇺🇸 美国节点", "🔗 Relay-Node-02", "🚀 日常代理", DIRECT]
 
-  # 第三层：10 个链式跳板 / 地区自建 / 机场节点池
-  - name: "👆 顶尖中转"
+  # 第三层：10 个链式跳板 / 地区 / 订阅节点池
+  - name: "🔄 核心中转"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Available.svg"
-    proxies: ["自建-欧洲主力", "自建-美国专线", "自建-日本主力"]
+    proxies: ["🇪🇺 EU-Node-01", "🇺🇸 US-Node-01", "🇯🇵 JP-Node-01"]
 
-  - name: "✈️ 机场跳板选择"
+  - name: "✈️ 链式跳板"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg"
-    proxies: ["👆 顶尖中转", "机场节点", "🖐️ 备用机场A", "🕊️ 备用机场B", "自建-美国专线", "自建-日本主力", "自建-欧洲主力"]
+    proxies: ["🔄 核心中转", "✈️ 全部机场", "📦 订阅源 A", "📦 订阅源 B", "🇺🇸 US-Node-01", "🇯🇵 JP-Node-01", "🇪🇺 EU-Node-01"]
 
-  - name: "🇺🇸 美国家宽"
+  - name: "🛡️ 静态纯净"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Home.svg"
-    proxies: ["自建-美国家宽", "🔗 链式-美国家宽"]
+    proxies: ["🇺🇸 US-Node-02", "🔗 Relay-Node-01"]
 
-  - name: "🇺🇸 美国"
+  - name: "🇺🇸 美国节点"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/America.svg"
-    proxies: ["自建-美国专线", "🇺🇸 美国家宽"]
+    proxies: ["🇺🇸 US-Node-01", "🛡️ 静态纯净"]
 
-  - name: "🌏 亚太"
+  - name: "🌏 亚太节点"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Japan.svg"
-    proxies: ["自建-日本主力"]
+    proxies: ["🇯🇵 JP-Node-01"]
 
-  - name: "🇪🇺 欧洲"
+  - name: "🇪🇺 欧洲节点"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/WorldMap.svg"
-    proxies: ["自建-欧洲主力"]
+    proxies: ["🇪🇺 EU-Node-01"]
 
-  - name: "🌎 南美洲"
+  - name: "🌐 其他地区"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/WorldMap.svg"
-    proxies: ["🔗 链式-南美"]
+    proxies: ["🔗 Relay-Node-02"]
 
-  - name: "机场节点"
+  - name: "✈️ 全部机场"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg"
     use: [Airport_Main, Airport_Backup_A, Airport_Backup_B]
     exclude-filter: "如节点失效|剩余|到期|官网|流量|套餐"
 
-  - name: "🖐️ 备用机场A"
+  - name: "📦 订阅源 A"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg"
     use: [Airport_Backup_A]
     exclude-filter: "如节点失效|剩余|到期|官网|流量|套餐"
 
-  - name: "🕊️ 备用机场B"
+  - name: "📦 订阅源 B"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg"
@@ -652,7 +652,7 @@ rules:
   - RULE-SET,private_ip,DIRECT,no-resolve
 
   # Google 国内 CDN 修复（必须放在 DOMAIN-SUFFIX,cn,DIRECT 之前）
-  - RULE-SET,google_cn_fix,🌐 Meta与Google
+  - RULE-SET,google_cn_fix,🌐 Google & Meta
 
   # 国内银行、政务、财税与个人直连扩展
   - DOMAIN-SUFFIX,cn,DIRECT
@@ -672,35 +672,35 @@ rules:
   - RULE-SET,citic_domain,DIRECT
 
   # 第 2 段：海外核心业务精准分流
-  - RULE-SET,bank_pay_extra,🏦 银行与支付
-  - RULE-SET,paypal_domain,🏦 银行与支付
-  - RULE-SET,stripe_domain,🏦 银行与支付
-  - RULE-SET,wise_domain,🏦 银行与支付
-  - RULE-SET,redotpay_domain,🏦 银行与支付
-  - RULE-SET,safepal_domain,🏦 银行与支付
+  - RULE-SET,bank_pay_extra,💳 支付与金融
+  - RULE-SET,paypal_domain,💳 支付与金融
+  - RULE-SET,stripe_domain,💳 支付与金融
+  - RULE-SET,wise_domain,💳 支付与金融
+  - RULE-SET,redotpay_domain,💳 支付与金融
+  - RULE-SET,safepal_domain,💳 支付与金融
 
-  - RULE-SET,web3_extra,🪙 区块链/Web3
-  - RULE-SET,crypto_domain,🪙 区块链/Web3
+  - RULE-SET,web3_extra,🪙 Web3 服务
+  - RULE-SET,crypto_domain,🪙 Web3 服务
 
-  - RULE-SET,youtube_domain,⬇️ 大流量视频
-  - RULE-SET,netflix_domain,⬇️ 大流量视频
-  - RULE-SET,disney_domain,⬇️ 大流量视频
-  - RULE-SET,twitch_domain,⬇️ 大流量视频
+  - RULE-SET,youtube_domain,🎬 影音流媒体
+  - RULE-SET,netflix_domain,🎬 影音流媒体
+  - RULE-SET,disney_domain,🎬 影音流媒体
+  - RULE-SET,twitch_domain,🎬 影音流媒体
 
   - RULE-SET,googlefcm_domain,📢 FCM 推送
 
-  - RULE-SET,meta_domain,🌐 Meta与Google
-  - RULE-SET,whatsapp_domain,🌐 Meta与Google
-  - RULE-SET,instagram_domain,🌐 Meta与Google
-  - RULE-SET,google_domain,🌐 Meta与Google
+  - RULE-SET,meta_domain,🌐 Google & Meta
+  - RULE-SET,whatsapp_domain,🌐 Google & Meta
+  - RULE-SET,instagram_domain,🌐 Google & Meta
+  - RULE-SET,google_domain,🌐 Google & Meta
 
   - RULE-SET,tiktok_domain,🎵 TikTok
 
-  - RULE-SET,linkedin_domain,💬 其他社媒
-  - RULE-SET,twitter_domain,💬 其他社媒
-  - RULE-SET,telegram_domain,💬 其他社媒
-  - RULE-SET,discord_domain,💬 其他社媒
-  - RULE-SET,reddit_domain,💬 其他社媒
+  - RULE-SET,linkedin_domain,💬 海外社媒
+  - RULE-SET,twitter_domain,💬 海外社媒
+  - RULE-SET,telegram_domain,💬 海外社媒
+  - RULE-SET,discord_domain,💬 海外社媒
+  - RULE-SET,reddit_domain,💬 海外社媒
 
   - DOMAIN-SUFFIX,notion.so,🤖 AI 服务
   - RULE-SET,ai_domain,🤖 AI 服务
@@ -716,5 +716,5 @@ rules:
 
   # 第 4 段：IP 兜底与漏网之鱼
   - RULE-SET,cn_ip,DIRECT
-  - RULE-SET,telegram_ip,💬 其他社媒,no-resolve
+  - RULE-SET,telegram_ip,💬 海外社媒,no-resolve
   - MATCH,🐟 漏网之鱼
