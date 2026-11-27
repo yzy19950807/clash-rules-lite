@@ -101,7 +101,51 @@ proxy-providers:
 
 # 5. 策略组（共 22 个，全部手动 select）
 proxy-groups:
-  # 第一层：11 个核心业务组
+  # 第一层：高频日常代理、核心中转与地区节点池（置顶方便快速切换）
+  - name: "🚀 日常代理"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Proxy.svg"
+    proxies: ["🔄 核心中转", "🇺🇸 美国节点", "🌏 亚太节点", "🇪🇺 欧洲节点", "🛡️ 静态纯净", "✈️ 全部机场", "📦 订阅源 A", "📦 订阅源 B", "🌐 其他地区", DIRECT]
+
+  - name: "🔄 核心中转"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Available.svg"
+    proxies: ["🇪🇺 EU-Node-01", "🇺🇸 US-Node-01", "🇯🇵 JP-Node-01"]
+
+  - name: "🛡️ 静态纯净"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Home.svg"
+    proxies: ["🇺🇸 US-Node-02", "🔗 Relay-Node-01"]
+
+  - name: "🇺🇸 美国节点"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/America.svg"
+    proxies: ["🇺🇸 US-Node-01", "🛡️ 静态纯净"]
+
+  - name: "🌏 亚太节点"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Japan.svg"
+    proxies: ["🇯🇵 JP-Node-01"]
+
+  - name: "🇪🇺 欧洲节点"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/WorldMap.svg"
+    proxies: ["🇪🇺 EU-Node-01"]
+
+  - name: "🌐 其他地区"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/WorldMap.svg"
+    proxies: ["🔗 Relay-Node-02"]
+
+
+  # 第二层：核心风控与业务策略组
   - name: "💳 支付与金融"
     type: select
     url: "https://www.gstatic.com/generate_204"
@@ -138,6 +182,8 @@ proxy-groups:
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/OpenAI.svg"
     proxies: ["🛡️ 静态纯净", "🇺🇸 美国节点", "🇪🇺 欧洲节点", "🌏 亚太节点"]
 
+
+  # 第三层：一次设好较少变动的流媒体 / 系统 / 跳板 / 机场池
   - name: "🎬 影音流媒体"
     type: select
     url: "https://www.gstatic.com/generate_204"
@@ -156,67 +202,23 @@ proxy-groups:
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Fcm.svg"
     proxies: [DIRECT, "🌐 Google & Meta", "🚀 日常代理", "🇺🇸 美国节点", "🌏 亚太节点"]
 
-  - name: "🚀 日常代理"
-    type: select
-    url: "https://www.gstatic.com/generate_204"
-    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Proxy.svg"
-    proxies: ["🔄 核心中转", "🇺🇸 美国节点", "🌏 亚太节点", "🇪🇺 欧洲节点", "🛡️ 静态纯净", "✈️ 全部机场", "📦 订阅源 A", "📦 订阅源 B", "🌐 其他地区", DIRECT]
-
   - name: "🐟 漏网之鱼"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Stack.svg"
     proxies: ["🚀 日常代理", DIRECT, "🇺🇸 美国节点", "🌏 亚太节点", "🇪🇺 欧洲节点"]
 
-  # 第二层：1 个自定义定向出口组（按需在本地 rules 中绑定指定域名或 IP）
   - name: "📌 定向分流"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Static.svg"
     proxies: ["🛡️ 静态纯净", "🔗 Relay-Node-01", "🇺🇸 美国节点", "🔗 Relay-Node-02", "🚀 日常代理", DIRECT]
 
-  # 第三层：10 个链式跳板 / 地区 / 订阅节点池
-  - name: "🔄 核心中转"
-    type: select
-    url: "https://www.gstatic.com/generate_204"
-    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Available.svg"
-    proxies: ["🇪🇺 EU-Node-01", "🇺🇸 US-Node-01", "🇯🇵 JP-Node-01"]
-
   - name: "✈️ 链式跳板"
     type: select
     url: "https://www.gstatic.com/generate_204"
     icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg"
     proxies: ["🔄 核心中转", "✈️ 全部机场", "📦 订阅源 A", "📦 订阅源 B", "🇺🇸 US-Node-01", "🇯🇵 JP-Node-01", "🇪🇺 EU-Node-01"]
-
-  - name: "🛡️ 静态纯净"
-    type: select
-    url: "https://www.gstatic.com/generate_204"
-    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Home.svg"
-    proxies: ["🇺🇸 US-Node-02", "🔗 Relay-Node-01"]
-
-  - name: "🇺🇸 美国节点"
-    type: select
-    url: "https://www.gstatic.com/generate_204"
-    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/America.svg"
-    proxies: ["🇺🇸 US-Node-01", "🛡️ 静态纯净"]
-
-  - name: "🌏 亚太节点"
-    type: select
-    url: "https://www.gstatic.com/generate_204"
-    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Japan.svg"
-    proxies: ["🇯🇵 JP-Node-01"]
-
-  - name: "🇪🇺 欧洲节点"
-    type: select
-    url: "https://www.gstatic.com/generate_204"
-    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/WorldMap.svg"
-    proxies: ["🇪🇺 EU-Node-01"]
-
-  - name: "🌐 其他地区"
-    type: select
-    url: "https://www.gstatic.com/generate_204"
-    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/WorldMap.svg"
-    proxies: ["🔗 Relay-Node-02"]
 
   - name: "✈️ 全部机场"
     type: select
