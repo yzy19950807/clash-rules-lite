@@ -1,55 +1,80 @@
-name: Generate Rules for Clash
+name: Build & Publish Clash Rules
+
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - '*.txt'
-      - '.github/workflows/**'
+      - 'rules/**'
+      - 'templates/**'
+      - '.github/workflows/release.yml'
+
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Generate rules.txt file
+      - name: Download Mihomo binary
         run: |
-          # 设置环境变量
-          echo "RELEASE_NAME=Released on $(date +%Y.%m.%d-%H:%M)" >> $GITHUB_ENV
-          echo "TAG_NAME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
-          # 下载*rules.txt文件
-          mkdir publish
-          for file in $(find $pwd -name "*rules.txt" | xargs ls -d); do 
-            curl -sSL "https://raw.githubusercontent.com/$GITHUB_REPOSITORY/main/${file#*./}" > "./publish/${file#*./}"
-          done
+          TAG=$(curl -sL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest | jq -r '.tag_name')
+          echo "Mihomo latest tag: $TAG"
+          curl -sSL "https://github.com/MetaCubeX/mihomo/releases/download/${TAG}/mihomo-linux-amd64-v1-${TAG}.gz" -o mihomo.gz
+          gunzip -f mihomo.gz
+          chmod +x mihomo
+          ./mihomo -v
 
-      - name: Release and upload assets
-        uses: softprops/action-gh-release@v0.1.6
+      - name: Compile .mrs and stage publish files
+        run: |
+          mkdir -p publish/templates
+          for f in rules/*.yaml; do
+            name=$(basename "$f" .yaml)
+            cp "$f" "publish/${name}.yaml"
+            ./mihomo convert-ruleset domain yaml "$f" "publish/${name}.mrs"
+            test -s "publish/${name}.mrs"
+          done
+          cp templates/*.yaml publish/templates/
+          echo "RELEASE_NAME=Released on $(date -u +%Y.%m.%d-%H:%M) UTC" >> "$GITHUB_ENV"
+          echo "TAG_NAME=$(date -u +%Y%m%d%H%M%S)" >> "$GITHUB_ENV"
+
+      - name: Validate Mihomo template
+        run: |
+          mkdir -p /tmp/mihomo_ci/profiles /tmp/mihomo_ci/ruleset
+          printf "proxies:\n  - {name: dummy, type: direct}\n" > /tmp/mihomo_ci/profiles/airport_main.yaml
+          cp /tmp/mihomo_ci/profiles/airport_main.yaml /tmp/mihomo_ci/profiles/airport_backup_a.yaml
+          cp /tmp/mihomo_ci/profiles/airport_main.yaml /tmp/mihomo_ci/profiles/airport_backup_b.yaml
+          sed 's|type: http|type: file|g' publish/templates/clash-verge-mihomo.yaml \
+            | awk '/^proxy-providers:/{pp=1} /^proxy-groups:/{pp=0} pp && /url:/{next} {print}' > /tmp/mihomo_ci/test.yaml
+          ./mihomo -d /tmp/mihomo_ci -t -f /tmp/mihomo_ci/test.yaml
+
+      - name: Push to release branch
+        run: |
+          cd publish
+          git init -b release
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "${{ env.RELEASE_NAME }}"
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push -f origin release
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
           name: ${{ env.RELEASE_NAME }}
           tag_name: ${{ env.TAG_NAME }}
-          draft: false
-          prerelease: false
           files: |
-            ./publish/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            publish/*.mrs
+            publish/*.yaml
+            publish/templates/*.yaml
 
-      - name: Git push assets to "release" branch
+      - name: Purge jsDelivr CDN
         run: |
-          cd publish || exit 1
-          git init
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b release
-          git add .
-          git commit -m "${{ env.RELEASE_NAME }}"
-          git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
-          git push -f origin release
-
-      - name: Purge jsdelivr CDN
-        run: |
-          cd publish || exit 1
-          for file in $(ls); do
-            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@release/${file}"
+          for file in publish/*.mrs publish/*.yaml; do
+            fname=$(basename "$file")
+            curl -sf "https://purge.jsdelivr.net/gh/${{ github.repository }}@release/${fname}" || true
           done

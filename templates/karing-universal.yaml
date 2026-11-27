@@ -1,0 +1,716 @@
+# =====================================================================
+# Karing (sing-box 内核) & Clash Verge Rev 公开脱敏模板 — B2B 外贸 / Web3 版
+# =====================================================================
+# 说明:
+# 1. 全部规则集使用标准 .yaml 格式，兼容 Karing (sing-box) 与 Clash Verge Rev。
+# 2. 自定义规则直接从 yzy19950807/clash-rules-lite@release 拉取，方便多端同步。
+# 3. 本模板仅含示例占位节点与占位订阅，使用前请替换为你的真实节点与订阅链接。
+# =====================================================================
+
+mixed-port: 7890
+allow-lan: true
+bind-address: "*"
+mode: rule
+log-level: warning
+ipv6: false
+external-controller: "127.0.0.1:9090"
+unified-delay: true
+tcp-concurrent: true
+keep-alive-interval: 30
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+dns:
+  enable: true
+  ipv6: false
+  listen: 0.0.0.0:1053
+  prefer-h3: false
+  use-hosts: true
+  use-system-hosts: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - "*.lan"
+    - "*.local"
+    - "*.arpa"
+    - "*.cn"
+    - "+.gov.cn"
+    - "+.home"
+    - "time.*.com"
+    - "ntp.*.com"
+    - "+.market.xiaomi.com"
+    - "localhost.ptlogin2.qq.com"
+    - "*.msftncsi.com"
+    - "www.msftconnecttest.com"
+    - "+.weixin.qq.com"
+    - "+.qq.com"
+    - "+.bjsinglewindow.com"
+    - "+.alipay.com"
+    - "+.alipayobjects.com"
+    - "+.alipaydns.com"
+    - "+.antgroup.com"
+    - "+.95588.com"
+    - "+.icbc.com"
+    - "+.ccb.com"
+    - "+.bankofchina.com"
+    - "+.bank-of-china.com"
+    - "+.cmbchina.com"
+    - "+.8008205555.com"
+    - "+.cmbimg.com"
+    - "+.pingan.com"
+    - "+.1qianbao.com"
+    - "+.lufax.com"
+    - "+.citicbank.com"
+    - "+.ecitic.com"
+    - "+.abchina.com"
+    - "+.bankcomm.com"
+    - "+.psbc.com"
+    - "+.cebbank.com"
+    - "+.unionpay.com"
+    - "+.95516.com"
+    - "+.95516.net"
+    - "+.95508.com"
+    - "+.webank.com"
+    - "+.chinapay.com"
+    - "+.chinaums.com"
+  default-nameserver:
+    - "223.5.5.5"
+    - "119.29.29.29"
+  proxy-server-nameserver:
+    - "223.5.5.5"
+    - "119.29.29.29"
+  nameserver:
+    - "https://cloudflare-dns.com/dns-query"
+    - "https://dns.google/dns-query"
+
+hosts:
+  "doh.pub": ["1.12.12.12", "120.53.53.53"]
+  "cloudflare-dns.com": ["1.1.1.1", "1.0.0.1"]
+  "dns.google": ["8.8.8.8", "8.8.4.4"]
+  "services.googleapis.cn": "services.googleapis.com"
+
+# 3. [示例占位节点] 请替换为你的真实自建与链式节点
+proxies:
+  - { name: "自建-美国专线", type: vless, server: us-direct.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000001, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
+  - { name: "自建-美国家宽", type: vless, server: us-isp.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000002, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
+  - { name: "自建-日本主力", type: vless, server: jp.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000003, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
+  - { name: "自建-欧洲主力", type: vless, server: eu.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000004, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
+  - { name: "🔗 链式-美国家宽", type: socks5, server: chain-us.example.com, port: 1080, username: user, password: CHANGE_ME, dialer-proxy: "✈️ 机场跳板选择" }
+  - { name: "🔗 链式-南美", type: socks5, server: chain-sa.example.com, port: 1080, username: user, password: CHANGE_ME, dialer-proxy: "👆 顶尖中转" }
+
+# 4. [示例占位订阅] 请替换为你的真实机场订阅链接
+proxy-providers:
+  Airport_Main:
+    type: http
+    url: "https://example.com/airport-main-subscription"
+    path: ./profiles/airport_main.yaml
+    interval: 43200
+    health-check: { enable: true, interval: 600, url: "https://www.gstatic.com/generate_204" }
+
+  Airport_Backup_A:
+    type: http
+    url: "https://example.com/airport-backup-a-subscription"
+    path: ./profiles/airport_backup_a.yaml
+    interval: 43200
+    health-check: { enable: true, interval: 600, url: "https://www.gstatic.com/generate_204" }
+
+  Airport_Backup_B:
+    type: http
+    url: "https://example.com/airport-backup-b-subscription"
+    path: ./profiles/airport_backup_b.yaml
+    interval: 43200
+    health-check: { enable: true, interval: 600, url: "https://www.gstatic.com/generate_204" }
+
+# 5. 策略组（共 22 个，全部手动 select）
+proxy-groups:
+  - name: "🏦 银行与支付"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/PayPal.svg"
+    proxies: ["🇺🇸 美国家宽", "🇺🇸 美国", "🇪🇺 欧洲", "🌏 亚太", "🌎 南美洲"]
+
+  - name: "🪙 区块链/Web3"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Bitcoin.svg"
+    proxies: ["🌏 亚太", "🇪🇺 欧洲", "🇺🇸 美国", "🇺🇸 美国家宽", "🌎 南美洲"]
+
+  - name: "🌐 Meta与Google"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Meta.svg"
+    proxies: ["🇺🇸 美国家宽", "🇺🇸 美国", "🇪🇺 欧洲", "🌏 亚太", "🌎 南美洲"]
+
+  - name: "🎵 TikTok"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/TikTok.svg"
+    proxies: ["🇺🇸 美国家宽", "🇺🇸 美国", "🇪🇺 欧洲", "🌏 亚太", "🌎 南美洲"]
+
+  - name: "💬 其他社媒"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Telegram.svg"
+    proxies: ["🇺🇸 美国家宽", "🇺🇸 美国", "🌏 亚太", "🇪🇺 欧洲", "🌎 南美洲"]
+
+  - name: "🤖 AI 服务"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/OpenAI.svg"
+    proxies: ["🇺🇸 美国家宽", "🇺🇸 美国", "🇪🇺 欧洲", "🌏 亚太"]
+
+  - name: "⬇️ 大流量视频"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/YouTube.svg"
+    proxies: ["机场节点", "🖐️ 备用机场A", "🕊️ 备用机场B", "👆 顶尖中转", "🇺🇸 美国", "🌏 亚太", "🇪🇺 欧洲"]
+
+  - name: "📱 系统服务"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Apple.svg"
+    proxies: [DIRECT, "🚀 日常代理", "🇺🇸 美国", "🌏 亚太", "🇪🇺 欧洲"]
+
+  - name: "📢 FCM 推送"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Fcm.svg"
+    proxies: [DIRECT, "🌐 Meta与Google", "🚀 日常代理", "🇺🇸 美国", "🌏 亚太"]
+
+  - name: "🚀 日常代理"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Proxy.svg"
+    proxies: ["👆 顶尖中转", "🇺🇸 美国", "🌏 亚太", "🇪🇺 欧洲", "🇺🇸 美国家宽", "机场节点", "🖐️ 备用机场A", "🕊️ 备用机场B", "🌎 南美洲", DIRECT]
+
+  - name: "🐟 漏网之鱼"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Stack.svg"
+    proxies: ["🚀 日常代理", DIRECT, "🇺🇸 美国", "🌏 亚太", "🇪🇺 欧洲"]
+
+  - name: "指定IP"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Static.svg"
+    proxies: ["🇺🇸 美国家宽", "🔗 链式-美国家宽", "🇺🇸 美国", "🔗 链式-南美", "🚀 日常代理", DIRECT]
+
+  - name: "👆 顶尖中转"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Available.svg"
+    proxies: ["自建-欧洲主力", "自建-美国专线", "自建-日本主力"]
+
+  - name: "✈️ 机场跳板选择"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg"
+    proxies: ["👆 顶尖中转", "机场节点", "🖐️ 备用机场A", "🕊️ 备用机场B", "自建-美国专线", "自建-日本主力", "自建-欧洲主力"]
+
+  - name: "🇺🇸 美国家宽"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Home.svg"
+    proxies: ["自建-美国家宽", "🔗 链式-美国家宽"]
+
+  - name: "🇺🇸 美国"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/America.svg"
+    proxies: ["自建-美国专线", "🇺🇸 美国家宽"]
+
+  - name: "🌏 亚太"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Japan.svg"
+    proxies: ["自建-日本主力"]
+
+  - name: "🇪🇺 欧洲"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/WorldMap.svg"
+    proxies: ["自建-欧洲主力"]
+
+  - name: "🌎 南美洲"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/WorldMap.svg"
+    proxies: ["🔗 链式-南美"]
+
+  - name: "机场节点"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg"
+    use: [Airport_Main, Airport_Backup_A, Airport_Backup_B]
+    exclude-filter: "如节点失效|剩余|到期|官网|流量|套餐"
+
+  - name: "🖐️ 备用机场A"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg"
+    use: [Airport_Backup_A]
+    exclude-filter: "如节点失效|剩余|到期|官网|流量|套餐"
+
+  - name: "🕊️ 备用机场B"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg"
+    use: [Airport_Backup_B]
+    exclude-filter: "如节点失效|剩余|到期|官网|流量|套餐"
+
+# 6. 远程规则集（全部使用标准 .yaml）
+rule-providers:
+  reject_extra:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/reject-extra.yaml"
+    path: ./ruleset/reject_extra.yaml
+    interval: 86400
+
+  direct_cn_extra:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/direct-cn-extra.yaml"
+    path: ./ruleset/direct_cn_extra.yaml
+    interval: 86400
+
+  bank_pay_extra:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/bank-pay-extra.yaml"
+    path: ./ruleset/bank_pay_extra.yaml
+    interval: 86400
+
+  web3_extra:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/web3-extra.yaml"
+    path: ./ruleset/web3_extra.yaml
+    interval: 86400
+
+  google_cn_fix:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/google-cn-fix.yaml"
+    path: ./ruleset/google_cn_fix.yaml
+    interval: 86400
+
+  private_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/private.yaml"
+    path: ./ruleset/private_domain.yaml
+    interval: 86400
+
+  private_ip:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/private.yaml"
+    path: ./ruleset/private_ip.yaml
+    interval: 86400
+
+  cn_ip:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.yaml"
+    path: ./ruleset/cn_ip.yaml
+    interval: 86400
+
+  geolocation_cn_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-cn.yaml"
+    path: ./ruleset/geolocation_cn_domain.yaml
+    interval: 86400
+
+  geolocation_noncn_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml"
+    path: ./ruleset/geolocation_noncn_domain.yaml
+    interval: 86400
+
+  games_download_cn_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-game-platforms-download@cn.yaml"
+    path: ./ruleset/games_download_cn_domain.yaml
+    interval: 86400
+
+  apple_cn_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple@cn.yaml"
+    path: ./ruleset/apple_cn_domain.yaml
+    interval: 86400
+
+  microsoft_cn_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft@cn.yaml"
+    path: ./ruleset/microsoft_cn_domain.yaml
+    interval: 86400
+
+  samsung_cn_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/samsung@cn.yaml"
+    path: ./ruleset/samsung_cn_domain.yaml
+    interval: 86400
+
+  apple_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple.yaml"
+    path: ./ruleset/apple_domain.yaml
+    interval: 86400
+
+  microsoft_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.yaml"
+    path: ./ruleset/microsoft_domain.yaml
+    interval: 86400
+
+  samsung_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/samsung.yaml"
+    path: ./ruleset/samsung_domain.yaml
+    interval: 86400
+
+  googlefcm_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/googlefcm.yaml"
+    path: ./ruleset/googlefcm_domain.yaml
+    interval: 86400
+
+  bilibili_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/bilibili.yaml"
+    path: ./ruleset/bilibili_domain.yaml
+    interval: 86400
+
+  ai_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-!cn.yaml"
+    path: ./ruleset/ai_domain.yaml
+    interval: 86400
+
+  crypto_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-cryptocurrency.yaml"
+    path: ./ruleset/crypto_domain.yaml
+    interval: 86400
+
+  redotpay_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/redotpay.yaml"
+    path: ./ruleset/redotpay_domain.yaml
+    interval: 86400
+
+  safepal_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/safepal.yaml"
+    path: ./ruleset/safepal_domain.yaml
+    interval: 86400
+
+  meta_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/meta.yaml"
+    path: ./ruleset/meta_domain.yaml
+    interval: 86400
+
+  bank_cn_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-bank-cn.yaml"
+    path: ./ruleset/bank_cn_domain.yaml
+    interval: 86400
+
+  icbc_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/icbc.yaml"
+    path: ./ruleset/icbc_domain.yaml
+    interval: 86400
+
+  ccb_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/ccb.yaml"
+    path: ./ruleset/ccb_domain.yaml
+    interval: 86400
+
+  boc_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/boc.yaml"
+    path: ./ruleset/boc_domain.yaml
+    interval: 86400
+
+  cmb_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cmb.yaml"
+    path: ./ruleset/cmb_domain.yaml
+    interval: 86400
+
+  pingan_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/pingan.yaml"
+    path: ./ruleset/pingan_domain.yaml
+    interval: 86400
+
+  citic_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/citic.yaml"
+    path: ./ruleset/citic_domain.yaml
+    interval: 86400
+
+  paypal_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/paypal.yaml"
+    path: ./ruleset/paypal_domain.yaml
+    interval: 86400
+
+  stripe_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/stripe.yaml"
+    path: ./ruleset/stripe_domain.yaml
+    interval: 86400
+
+  wise_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/wise.yaml"
+    path: ./ruleset/wise_domain.yaml
+    interval: 86400
+
+  whatsapp_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/whatsapp.yaml"
+    path: ./ruleset/whatsapp_domain.yaml
+    interval: 86400
+
+  instagram_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/instagram.yaml"
+    path: ./ruleset/instagram_domain.yaml
+    interval: 86400
+
+  google_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.yaml"
+    path: ./ruleset/google_domain.yaml
+    interval: 86400
+
+  tiktok_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/tiktok.yaml"
+    path: ./ruleset/tiktok_domain.yaml
+    interval: 86400
+
+  linkedin_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/linkedin.yaml"
+    path: ./ruleset/linkedin_domain.yaml
+    interval: 86400
+
+  twitter_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/twitter.yaml"
+    path: ./ruleset/twitter_domain.yaml
+    interval: 86400
+
+  telegram_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.yaml"
+    path: ./ruleset/telegram_domain.yaml
+    interval: 86400
+
+  telegram_ip:
+    type: http
+    behavior: ipcidr
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.yaml"
+    path: ./ruleset/telegram_ip.yaml
+    interval: 86400
+
+  discord_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/discord.yaml"
+    path: ./ruleset/discord_domain.yaml
+    interval: 86400
+
+  reddit_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/reddit.yaml"
+    path: ./ruleset/reddit_domain.yaml
+    interval: 86400
+
+  youtube_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml"
+    path: ./ruleset/youtube_domain.yaml
+    interval: 86400
+
+  netflix_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/netflix.yaml"
+    path: ./ruleset/netflix_domain.yaml
+    interval: 86400
+
+  disney_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/disney.yaml"
+    path: ./ruleset/disney_domain.yaml
+    interval: 86400
+
+  twitch_domain:
+    type: http
+    behavior: domain
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/twitch.yaml"
+    path: ./ruleset/twitch_domain.yaml
+    interval: 86400
+
+# 7. 四段式低耗规则判断区
+rules:
+  - RULE-SET,reject_extra,REJECT
+  - RULE-SET,private_domain,DIRECT
+  - RULE-SET,private_ip,DIRECT,no-resolve
+
+  - RULE-SET,google_cn_fix,🌐 Meta与Google
+
+  - DOMAIN-SUFFIX,cn,DIRECT
+  - RULE-SET,direct_cn_extra,DIRECT
+  - RULE-SET,geolocation_cn_domain,DIRECT
+  - RULE-SET,games_download_cn_domain,DIRECT
+  - RULE-SET,apple_cn_domain,DIRECT
+  - RULE-SET,microsoft_cn_domain,DIRECT
+  - RULE-SET,samsung_cn_domain,DIRECT
+  - RULE-SET,bilibili_domain,DIRECT
+  - RULE-SET,bank_cn_domain,DIRECT
+  - RULE-SET,icbc_domain,DIRECT
+  - RULE-SET,ccb_domain,DIRECT
+  - RULE-SET,boc_domain,DIRECT
+  - RULE-SET,cmb_domain,DIRECT
+  - RULE-SET,pingan_domain,DIRECT
+  - RULE-SET,citic_domain,DIRECT
+
+  - RULE-SET,bank_pay_extra,🏦 银行与支付
+  - RULE-SET,paypal_domain,🏦 银行与支付
+  - RULE-SET,stripe_domain,🏦 银行与支付
+  - RULE-SET,wise_domain,🏦 银行与支付
+  - RULE-SET,redotpay_domain,🏦 银行与支付
+  - RULE-SET,safepal_domain,🏦 银行与支付
+
+  - RULE-SET,web3_extra,🪙 区块链/Web3
+  - RULE-SET,crypto_domain,🪙 区块链/Web3
+
+  - RULE-SET,youtube_domain,⬇️ 大流量视频
+  - RULE-SET,netflix_domain,⬇️ 大流量视频
+  - RULE-SET,disney_domain,⬇️ 大流量视频
+  - RULE-SET,twitch_domain,⬇️ 大流量视频
+
+  - RULE-SET,googlefcm_domain,📢 FCM 推送
+
+  - RULE-SET,meta_domain,🌐 Meta与Google
+  - RULE-SET,whatsapp_domain,🌐 Meta与Google
+  - RULE-SET,instagram_domain,🌐 Meta与Google
+  - RULE-SET,google_domain,🌐 Meta与Google
+
+  - RULE-SET,tiktok_domain,🎵 TikTok
+
+  - RULE-SET,linkedin_domain,💬 其他社媒
+  - RULE-SET,twitter_domain,💬 其他社媒
+  - RULE-SET,telegram_domain,💬 其他社媒
+  - RULE-SET,discord_domain,💬 其他社媒
+  - RULE-SET,reddit_domain,💬 其他社媒
+
+  - DOMAIN-SUFFIX,notion.so,🤖 AI 服务
+  - RULE-SET,ai_domain,🤖 AI 服务
+
+  - RULE-SET,apple_domain,📱 系统服务
+  - RULE-SET,microsoft_domain,📱 系统服务
+  - RULE-SET,samsung_domain,📱 系统服务
+
+  - DOMAIN-SUFFIX,linux.do,🚀 日常代理
+
+  - RULE-SET,geolocation_noncn_domain,🚀 日常代理
+
+  - RULE-SET,cn_ip,DIRECT
+  - RULE-SET,telegram_ip,💬 其他社媒,no-resolve
+  - MATCH,🐟 漏网之鱼
