@@ -1,0 +1,445 @@
+# =====================================================================
+# Clash Verge Rev (Mihomo 内核) 公开脱敏模板 — 多场景分流 / 全手动版
+# =====================================================================
+# 核心特性:
+# 1. 零自动切换风控: 全部 22 个策略组均为手动 select，彻底剔除 url-test 自动测速
+# 2. 零泄露 DNS 架构: 采纳 MyClash 防泄露设计 + ipv6: false + 全量 .mrs 低耗规则集
+# 3. 自定义规则远程化: 个人增量规则直接从 yzy19950807/clash-rules-lite@release 拉取 .mrs
+# 4. 完全脱敏: 本模板仅含示例占位节点与占位订阅，使用前请替换为你的真实节点与订阅链接
+# =====================================================================
+
+mixed-port: 7890
+allow-lan: true
+bind-address: "*"
+mode: rule
+log-level: warning
+ipv6: false
+external-controller: "127.0.0.1:9090"
+unified-delay: true
+tcp-concurrent: true
+keep-alive-interval: 30
+find-process-mode: off
+geodata-mode: false
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+dns:
+  enable: true
+  ipv6: false
+  listen: 0.0.0.0:1053
+  cache-algorithm: arc
+  prefer-h3: false
+  use-hosts: true
+  use-system-hosts: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - "rule-set:private_domain"
+    - "rule-set:fakeip_filter"
+    - "rule-set:direct_cn_all"
+    - "rule-set:googlefcm"
+  default-nameserver:
+    - "223.5.5.5"
+    - "119.29.29.29"
+  proxy-server-nameserver:
+    - "223.5.5.5"
+    - "119.29.29.29"
+    - "https://doh.pub/dns-query"
+    - "https://dns.alidns.com/dns-query"
+  nameserver:
+    - "https://cloudflare-dns.com/dns-query#🚀 日常代理"
+    - "https://dns.google/dns-query#🚀 日常代理"
+  nameserver-policy:
+    "rule-set:private_domain": system
+    "rule-set:direct_cn_all":
+      - "223.5.5.5#DIRECT"
+      - "119.29.29.29#DIRECT"
+  direct-nameserver:
+    - "223.5.5.5#DIRECT"
+    - "119.29.29.29#DIRECT"
+  direct-nameserver-follow-policy: true
+
+hosts:
+  "doh.pub": ["1.12.12.12", "120.53.53.53"]
+  "cloudflare-dns.com": ["1.1.1.1", "1.0.0.1"]
+  "dns.google": ["8.8.8.8", "8.8.4.4"]
+  "services.googleapis.cn": "services.googleapis.com"
+
+# 3. [示例占位节点] 请替换为你的真实节点与链式节点
+proxies:
+  - { name: "🇺🇸 US-Node-01", type: vless, server: us-01.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000001, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
+  - { name: "🇺🇸 US-Node-02", type: vless, server: us-02.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000002, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
+  - { name: "🇯🇵 JP-Node-01", type: vless, server: jp-01.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000003, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
+  - { name: "🇪🇺 EU-Node-01", type: vless, server: eu-01.example.com, port: 443, uuid: 00000000-0000-0000-0000-000000000004, network: tcp, tls: true, udp: true, flow: xtls-rprx-vision, servername: example.com, client-fingerprint: chrome }
+  - { name: "🔗 Relay-Node-01", type: socks5, server: relay-01.example.com, port: 1080, username: user, password: CHANGE_ME, dialer-proxy: "✈️ 链式跳板" }
+  - { name: "🔗 Relay-Node-02", type: socks5, server: relay-02.example.com, port: 1080, username: user, password: CHANGE_ME, dialer-proxy: "🔄 核心中转" }
+
+# 4. [示例占位订阅] 请替换为你的真实机场订阅链接
+proxy-providers:
+  Airport_Main:
+    type: http
+    url: "https://example.com/airport-main-subscription"
+    path: ./profiles/airport_main.yaml
+    interval: 43200
+    health-check: { enable: true, interval: 600, url: "https://www.gstatic.com/generate_204", lazy: true }
+
+  Airport_Backup_A:
+    type: http
+    url: "https://example.com/airport-backup-a-subscription"
+    path: ./profiles/airport_backup_a.yaml
+    interval: 43200
+    health-check: { enable: true, interval: 600, url: "https://www.gstatic.com/generate_204", lazy: true }
+
+  Airport_Backup_B:
+    type: http
+    url: "https://example.com/airport-backup-b-subscription"
+    path: ./profiles/airport_backup_b.yaml
+    interval: 43200
+    health-check: { enable: true, interval: 600, url: "https://www.gstatic.com/generate_204", lazy: true }
+
+# 5. 策略组（共 22 个，全部手动 select）
+proxy-groups:
+  # 第一层：高频日常代理、核心中转与地区节点池（置顶方便快速切换）
+  - name: "🚀 日常代理"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Proxy.svg"
+    proxies: ["🔄 核心中转", "🇺🇸 美国节点", "🌏 亚太节点", "🇪🇺 欧洲节点", "🛡️ 静态纯净", "✈️ 全部机场", "📦 订阅源 A", "📦 订阅源 B", "🌐 其他地区", DIRECT]
+
+  - name: "🔄 核心中转"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Available.svg"
+    proxies: ["🇪🇺 EU-Node-01", "🇺🇸 US-Node-01", "🇯🇵 JP-Node-01"]
+
+  - name: "🛡️ 静态纯净"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Home.svg"
+    proxies: ["🇺🇸 US-Node-02", "🔗 Relay-Node-01"]
+
+  - name: "🇺🇸 美国节点"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/America.svg"
+    proxies: ["🇺🇸 US-Node-01", "🛡️ 静态纯净"]
+
+  - name: "🌏 亚太节点"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Japan.svg"
+    proxies: ["🇯🇵 JP-Node-01"]
+
+  - name: "🇪🇺 欧洲节点"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/WorldMap.svg"
+    proxies: ["🇪🇺 EU-Node-01"]
+
+  - name: "🌐 其他地区"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/WorldMap.svg"
+    proxies: ["🔗 Relay-Node-02"]
+
+
+  # 第二层：核心风控与业务策略组
+  - name: "💳 支付与金融"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/PayPal.svg"
+    proxies: ["🛡️ 静态纯净", "🇺🇸 美国节点", "🇪🇺 欧洲节点", "🌏 亚太节点", "🌐 其他地区"]
+
+  - name: "🪙 Web3 服务"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Bitcoin.svg"
+    proxies: ["🌏 亚太节点", "🇪🇺 欧洲节点", "🇺🇸 美国节点", "🛡️ 静态纯净", "🌐 其他地区"]
+
+  - name: "🌐 Google & Meta"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Meta.svg"
+    proxies: ["🛡️ 静态纯净", "🇺🇸 美国节点", "🇪🇺 欧洲节点", "🌏 亚太节点", "🌐 其他地区"]
+
+  - name: "🎵 TikTok"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/TikTok.svg"
+    proxies: ["🛡️ 静态纯净", "🇺🇸 美国节点", "🇪🇺 欧洲节点", "🌏 亚太节点", "🌐 其他地区"]
+
+  - name: "💬 海外社媒"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Telegram.svg"
+    proxies: ["🛡️ 静态纯净", "🇺🇸 美国节点", "🌏 亚太节点", "🇪🇺 欧洲节点", "🌐 其他地区"]
+
+  - name: "🤖 AI 服务"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/OpenAI.svg"
+    proxies: ["🛡️ 静态纯净", "🇺🇸 美国节点", "🇪🇺 欧洲节点", "🌏 亚太节点"]
+
+
+  # 第三层：一次设好较少变动的流媒体 / 系统 / 跳板 / 机场池
+  - name: "🎬 影音流媒体"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/YouTube.svg"
+    proxies: ["✈️ 全部机场", "📦 订阅源 A", "📦 订阅源 B", "🔄 核心中转", "🇺🇸 美国节点", "🌏 亚太节点", "🇪🇺 欧洲节点"]
+
+  - name: "📱 系统服务"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Apple.svg"
+    proxies: [DIRECT, "🚀 日常代理", "🇺🇸 美国节点", "🌏 亚太节点", "🇪🇺 欧洲节点"]
+
+  - name: "📢 FCM 推送"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Fcm.svg"
+    proxies: [DIRECT, "🌐 Google & Meta", "🚀 日常代理", "🇺🇸 美国节点", "🌏 亚太节点"]
+
+  - name: "🐟 漏网之鱼"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Stack.svg"
+    proxies: ["🚀 日常代理", DIRECT, "🇺🇸 美国节点", "🌏 亚太节点", "🇪🇺 欧洲节点"]
+
+  - name: "📌 定向分流"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Static.svg"
+    proxies: ["🛡️ 静态纯净", "🔗 Relay-Node-01", "🇺🇸 美国节点", "🔗 Relay-Node-02", "🚀 日常代理", DIRECT]
+
+  - name: "✈️ 链式跳板"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg"
+    proxies: ["🔄 核心中转", "✈️ 全部机场", "📦 订阅源 A", "📦 订阅源 B", "🇺🇸 US-Node-01", "🇯🇵 JP-Node-01", "🇪🇺 EU-Node-01"]
+
+  - name: "✈️ 全部机场"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg"
+    use: [Airport_Main, Airport_Backup_A, Airport_Backup_B]
+    exclude-filter: "如节点失效|剩余|到期|官网|流量|套餐"
+
+  - name: "📦 订阅源 A"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg"
+    use: [Airport_Backup_A]
+    exclude-filter: "如节点失效|剩余|到期|官网|流量|套餐"
+
+  - name: "📦 订阅源 B"
+    type: select
+    url: "https://www.gstatic.com/generate_204"
+    icon: "https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg"
+    use: [Airport_Backup_B]
+    exclude-filter: "如节点失效|剩余|到期|官网|流量|套餐"
+
+# 6. 远程规则集（全部由本仓库 @release 自动聚合去重编译，共 21 个 .mrs）
+rule-providers:
+  fakeip_filter:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/fakeip-filter.mrs"
+    path: ./ruleset/fakeip_filter.mrs
+    interval: 86400
+
+  reject_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/reject-all.mrs"
+    path: ./ruleset/reject_all.mrs
+    interval: 86400
+
+  private_domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/private-domain.mrs"
+    path: ./ruleset/private_domain.mrs
+    interval: 86400
+
+  google_cn_fix:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/google-cn-fix.mrs"
+    path: ./ruleset/google_cn_fix.mrs
+    interval: 86400
+
+  direct_cn_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/direct-cn-all.mrs"
+    path: ./ruleset/direct_cn_all.mrs
+    interval: 86400
+
+  pay_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/pay-all.mrs"
+    path: ./ruleset/pay_all.mrs
+    interval: 86400
+
+  web3_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/web3-all.mrs"
+    path: ./ruleset/web3_all.mrs
+    interval: 86400
+
+  media_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/media-all.mrs"
+    path: ./ruleset/media_all.mrs
+    interval: 86400
+
+  googlefcm:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/googlefcm.mrs"
+    path: ./ruleset/googlefcm.mrs
+    interval: 86400
+
+  google_meta_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/google-meta-all.mrs"
+    path: ./ruleset/google_meta_all.mrs
+    interval: 86400
+
+  tiktok:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/tiktok.mrs"
+    path: ./ruleset/tiktok.mrs
+    interval: 86400
+
+  social_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/social-all.mrs"
+    path: ./ruleset/social_all.mrs
+    interval: 86400
+
+  ai_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/ai-all.mrs"
+    path: ./ruleset/ai_all.mrs
+    interval: 86400
+
+  github:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/github.mrs"
+    path: ./ruleset/github.mrs
+    interval: 86400
+
+  system_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/system-all.mrs"
+    path: ./ruleset/system_all.mrs
+    interval: 86400
+
+  noncn_all:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/noncn-all.mrs"
+    path: ./ruleset/noncn_all.mrs
+    interval: 86400
+
+  private_ip:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/private-ip.mrs"
+    path: ./ruleset/private_ip.mrs
+    interval: 86400
+
+  meta_ip:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/meta-ip.mrs"
+    path: ./ruleset/meta_ip.mrs
+    interval: 86400
+
+  media_ip:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/media-ip.mrs"
+    path: ./ruleset/media_ip.mrs
+    interval: 86400
+
+  social_ip:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/social-ip.mrs"
+    path: ./ruleset/social_ip.mrs
+    interval: 86400
+
+  cn_ip:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/yzy19950807/clash-rules-lite@release/cn-ip.mrs"
+    path: ./ruleset/cn_ip.mrs
+    interval: 86400
+
+# 7. 四段式全量聚合规则判断区（仅 23 条，云端已自动去重与剔除冲突）
+rules:
+  # 第 1 段：隐私拦截、私网、Google CN 修复、全量国内直连
+  - RULE-SET,reject_all,REJECT
+  - RULE-SET,private_domain,DIRECT
+  - RULE-SET,private_ip,DIRECT,no-resolve
+  - RULE-SET,google_cn_fix,🌐 Google & Meta
+  - DOMAIN-SUFFIX,cn,DIRECT
+  - RULE-SET,direct_cn_all,DIRECT
+
+  # 第 2 段：海外核心业务精准分流
+  - RULE-SET,pay_all,💳 支付与金融
+  - RULE-SET,web3_all,🪙 Web3 服务
+  - RULE-SET,media_all,🎬 影音流媒体
+  - RULE-SET,googlefcm,📢 FCM 推送
+  - RULE-SET,google_meta_all,🌐 Google & Meta
+  - RULE-SET,tiktok,🎵 TikTok
+  - RULE-SET,social_all,💬 海外社媒
+  - RULE-SET,ai_all,🤖 AI 服务
+  - RULE-SET,github,🚀 日常代理
+  - RULE-SET,system_all,📱 系统服务
+  - DOMAIN-SUFFIX,linux.do,🚀 日常代理
+
+  # 第 3 段：其余已知海外域名
+  - RULE-SET,noncn_all,🚀 日常代理
+
+  # 第 4 段：IP 兜底（防止 App 直连 IP 漏网）与漏网之鱼
+  - RULE-SET,meta_ip,🌐 Google & Meta,no-resolve
+  - RULE-SET,media_ip,🎬 影音流媒体,no-resolve
+  - RULE-SET,social_ip,💬 海外社媒,no-resolve
+  - RULE-SET,cn_ip,DIRECT
+  - MATCH,🐟 漏网之鱼
